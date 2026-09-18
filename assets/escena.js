@@ -89,10 +89,10 @@ export function crearEscena(contenedor, { alTick } = {}) {
   const nodos = {};
   // Nevera / vitrina
   { const g = new THREE.Group(); g.position.set(2.95, 0, -2.45);
-    const cuerpo = caja(1.05, 2.05, 0.8, C.blanco, { rough: 0.35 }); cuerpo.position.y = 1.025; g.add(cuerpo);
+    const cuerpo = caja(1.05, 1.8, 0.8, C.blanco, { rough: 0.35 }); cuerpo.position.y = 1.15; g.add(cuerpo);
     const vidrio = caja(0.9, 1.5, 0.02, 0xbfe3ec, { rough: 0.1, metal: 0.1, emissive: 0x9fd9e6, ei: 0.35, sombra: false }); vidrio.position.set(0, 1.2, 0.41); g.add(vidrio);
     for (let i = 0; i < 3; i++) { const r = caja(0.86, 0.03, 0.6, 0xe7ecef); r.position.set(0, 0.7 + i * 0.42, 0.02); g.add(r); }
-    const base = caja(1.05, 0.25, 0.8, C.tinta); base.position.y = 0.125; g.add(base);
+    const base = caja(1.0, 0.24, 0.76, C.tinta); base.position.y = 0.12; g.add(base);
     mundo.add(g); nodos.frio = { grupo: g, punto: new THREE.Vector3(2.95, 2.1, -2.45) }; }
   // Aire acondicionado en el muro
   { const g = new THREE.Group(); g.position.set(-1.1, 2.55, -2.86);
