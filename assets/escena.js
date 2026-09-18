@@ -157,7 +157,7 @@ export function crearEscena(contenedor, { alTick } = {}) {
 
   // Etiquetas de costo y anillos de módulo
   const etiquetas = {}; const anillos = {};
-  const posEtiq = { frio: [2.95, 2.55, -2.2], aire: [-1.1, 3.25, -2.6], horno: [0.0, 1.3, -1.9], luces: [2.1, 2.5, 0.6], equipos: [0.7, 1.8, 1.1] };
+  const posEtiq = { frio: [2.95, 2.55, -2.2], aire: [-1.1, 3.25, -2.6], horno: [0.9, 1.5, -2.2], luces: [-1.6, 2.1, 0.4], equipos: [0.7, 1.8, 1.1] };
   for (const e of EQUIPOS) {
     const hex = e.fuga ? "#f0a202" : "#e9efe8";
     const sp = etiqueta("$" + e.mes.toLocaleString("es-CO"), e.fuga ? "Aire · prendido de noche" : e.nombre + " · al mes", hex);
@@ -262,7 +262,7 @@ export function crearEscena(contenedor, { alTick } = {}) {
 
       // Etiquetas y anillos
       const et = etiquetas[e.id];
-      et.material.opacity += ((mix.entender > 0.5 ? 1 : 0) - et.material.opacity) * Math.min(1, dt * 4);
+      et.material.opacity += ((mix.entender > 0.5 && estado !== "ahorrar" ? 1 : 0) - et.material.opacity) * Math.min(1, dt * 4);
       et.position.y = posEtiq[e.id][1] + Math.sin(t * 1.3 + posEtiq[e.id][0]) * 0.04;
       const a = anillos[e.id];
       if (a) {
