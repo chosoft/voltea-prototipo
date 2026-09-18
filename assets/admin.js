@@ -6,9 +6,10 @@
   const db = window.supabase.createClient(CFG.supabaseUrl, CFG.supabaseKey);
   const pesos = (n) => (n == null ? "—" : "$" + Math.round(n).toLocaleString("es-CO"));
   const esc = (t) => String(t ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
-  const fecha = (iso) => new Date(iso).toLocaleString("es-CO", { day: "2-digit", month: "short", hour: "2-digit", minute: "2-digit" });
+  const fecha = (iso) => { const d = new Date(iso); return d.toLocaleDateString("es-CO", { day: "numeric", month: "short" }).replace(".", "") + " · " + d.toLocaleTimeString("es-CO", { hour: "numeric", minute: "2-digit", hour12: false }); };
   const hora = (iso) => new Date(iso).toLocaleTimeString("es-CO", { hour: "2-digit", minute: "2-digit" });
   const NOMBRE_MOD = Object.fromEntries(CFG.modulos.map((m) => [m.id, m.nombre]));
+  const FRANJA = { manana: "Mañana", mediodia: "Mediodía", tarde: "Tarde" };
   const ROL = { yo_solo: "Decide solo", yo_con_socio: "Con socio", otra_persona: "Otra persona" };
 
   let eventos = [], leads = [];
@@ -147,7 +148,7 @@
         const tel = String(l.whatsapp).replace(/\D/g, "");
         const wa = tel ? `https://wa.me/${tel.length === 10 ? "57" + tel : tel}` : null;
         return `<tr>
-          <td class="mono">${fecha(l.creado)}</td>
+          <td class="fecha">${fecha(l.creado)}</td>
           <td><strong>${esc(l.nombre)}</strong><br><span class="no">${esc(l.negocio)}</span></td>
           <td>${esc(CFG.perfiles[l.tipo_negocio]?.nombre || l.tipo_negocio)}<br><span class="no">${esc(l.ciudad)}</span></td>
           <td class="mono">${wa ? `<a href="${wa}" target="_blank" rel="noopener">${esc(l.whatsapp)}</a>` : esc(l.whatsapp)}${l.correo ? `<br><span class="no">${esc(l.correo)}</span>` : ""}</td>
@@ -157,7 +158,7 @@
           <td class="num">${pesos(l.total_mensual)}</td>
           <td>${l.acepta_precio ? '<span class="si">Sí</span>' : '<span class="no">No</span>'}</td>
           <td>${l.cupo_apartado ? '<span class="si">Sí</span>' : '<span class="no">No</span>'}</td>
-          <td class="mono">${l.fecha_preferida ? new Date(l.fecha_preferida + "T12:00").toLocaleDateString("es-CO", { day: "2-digit", month: "short" }) : "—"} · ${esc(l.franja_preferida || "")}</td>
+          <td class="mono">${l.fecha_preferida ? new Date(l.fecha_preferida + "T12:00").toLocaleDateString("es-CO", { day: "2-digit", month: "short" }) : "—"} <br><span class="no">${esc(FRANJA[l.franja_preferida] || l.franja_preferida || "")}</span></td>
           <td>${s ? badge(s) : "—"}</td>
           <td class="mono">${esc(l.entrevistador || "—")}</td>
         </tr>`;
@@ -167,7 +168,7 @@
     const PASOS = [["precios", "precios"], ["calculadora", "calc."], ["modulo", "módulo"], ["formulario", "form."], ["agendo", "agendó"], ["precio", "precio"], ["cupo", "cupo"]];
     $("#tabla-sesiones").innerHTML = ses.length ? `<thead><tr><th>Última actividad</th><th>Visitante</th><th>Pasos</th><th class="num">Factura (calc.)</th><th class="num">Plan armado</th><th>Compromiso</th><th>Dispositivo</th><th>Entrev.</th></tr></thead><tbody>` +
       ses.slice(0, 300).map((s) => `<tr>
-        <td class="mono">${fecha(s.fin)}</td>
+        <td class="fecha">${fecha(s.fin)}</td>
         <td>${s.lead ? `<strong>${esc(s.lead.nombre)}</strong>` : `<span class="mono no">${esc(s.sesion.slice(0, 8))}</span>`}</td>
         <td><div class="chips">${PASOS.map(([k, n]) => `<span class="chip ${s.pasos.has(k) ? "on" : ""}">${n}</span>`).join("")}</div></td>
         <td class="num">${pesos(s.lead?.factura_mensual ?? s.calc?.factura)}</td>

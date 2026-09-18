@@ -17,6 +17,7 @@
   --gutter: clamp(16px, 3vw, 32px); color-scheme: light;
 }
 * { box-sizing: border-box; }
+[hidden] { display: none !important; }
 body { margin: 0; background: var(--papel); color: var(--tinta); font: 15px/1.5 var(--texto); -webkit-font-smoothing: antialiased; }
 h1, h2, h3 { margin: 0; line-height: 1.1; text-wrap: balance; }
 h1 { font-size: 1.5rem; font-weight: 800; font-variation-settings: "wdth" 118; }
@@ -74,6 +75,7 @@ main { max-width: 1320px; margin: 0 auto; padding: 24px var(--gutter) 64px; disp
 table { width: 100%; border-collapse: collapse; font-size: .84rem; }
 th { text-align: left; font-family: var(--mono); font-size: .68rem; text-transform: uppercase; letter-spacing: .06em; color: var(--gris); font-weight: 500; padding: 8px 10px; border-bottom: 1.5px solid var(--tinta); white-space: nowrap; }
 td { padding: 10px; border-bottom: 1px solid var(--linea); vertical-align: top; }
+td.fecha { font-family: var(--mono); white-space: nowrap; }
 td.num { font-family: var(--mono); text-align: right; white-space: nowrap; font-variant-numeric: tabular-nums; }
 th.num { text-align: right; }
 tr:hover td { background: #f6f8f4; }
