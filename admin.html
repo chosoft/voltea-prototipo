@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="es-CO">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>Voltea · Backoffice de validación</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%2316211C'/%3E%3Cpath d='M18 4 8 18h7l-2 10 11-15h-7z' fill='%23F0A202'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+:root {
+  --papel: #f2f4ef; --papel-2: #e8ece5; --blanco: #fbfcf9; --tinta: #16211c; --tinta-2: #3b4842; --gris: #5f6b65; --linea: #d3dad1;
+  --tablero: #1c2a24; --ambar: #f0a202; --ambar-suave: #fbe7b5; --ahorro: #0b7a64; --ahorro-claro: #3fc8a4; --ahorro-suave: #d5efe6; --error: #b3261e; --error-suave: #f6dcd9;
+  --texto: "Archivo", system-ui, -apple-system, "Segoe UI", sans-serif; --mono: "IBM Plex Mono", ui-monospace, Menlo, monospace;
+  --gutter: clamp(16px, 3vw, 32px); color-scheme: light;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--papel); color: var(--tinta); font: 15px/1.5 var(--texto); -webkit-font-smoothing: antialiased; }
+h1, h2, h3 { margin: 0; line-height: 1.1; text-wrap: balance; }
+h1 { font-size: 1.5rem; font-weight: 800; font-variation-settings: "wdth" 118; }
+h2 { font-size: 1.1rem; font-weight: 750; font-variation-settings: "wdth" 110; }
+p { margin: 0; }
+.mono { font-family: var(--mono); font-variant-numeric: tabular-nums; }
+button, select, input { font: inherit; }
+:focus-visible { outline: 3px solid var(--ambar); outline-offset: 2px; }
+
+.barra { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 10; display: flex; flex-wrap: wrap; align-items: center; gap: 12px 20px; padding: 12px var(--gutter); background: var(--tablero); color: #e3eae4; }
+.marca { display: flex; align-items: center; gap: 10px; margin-right: auto; }
+.marca svg { width: 28px; height: 28px; }
+.marca span { font-weight: 850; font-size: 1.2rem; font-variation-settings: "wdth" 125; }
+.marca small { font-family: var(--mono); font-size: .72rem; color: #8ea398; text-transform: uppercase; letter-spacing: .08em; }
+.filtros { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
+.filtros label { display: flex; align-items: center; gap: 6px; font-size: .85rem; color: #c9d6cf; }
+.filtros select { background: #26362f; color: #e3eae4; border: 1px solid #33463d; border-radius: 8px; padding: 6px 8px; }
+.btn { border: 0; border-radius: 999px; padding: 8px 14px; cursor: pointer; background: var(--tinta); color: var(--papel); font-weight: 600; font-size: .85rem; }
+.btn-claro { background: #e3eae4; color: var(--tinta); }
+.btn-borde { background: transparent; color: inherit; box-shadow: inset 0 0 0 1.5px currentColor; }
+
+main { max-width: 1320px; margin: 0 auto; padding: 24px var(--gutter) 64px; display: grid; gap: 24px; }
+.panel { background: var(--blanco); border-radius: 16px; box-shadow: 0 0 0 1px var(--linea); padding: 20px; display: grid; gap: 16px; min-width: 0; }
+.panel-cabeza { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 8px 16px; }
+.panel-cabeza p { color: var(--gris); font-size: .85rem; }
+
+.kpis { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 12px; }
+.kpi { background: var(--blanco); border-radius: 14px; box-shadow: 0 0 0 1px var(--linea); padding: 14px 16px; display: grid; gap: 4px; }
+.kpi-rotulo { font-family: var(--mono); font-size: .7rem; text-transform: uppercase; letter-spacing: .07em; color: var(--gris); }
+.kpi-valor { font-family: var(--mono); font-size: 1.9rem; font-weight: 600; line-height: 1.1; }
+.kpi-sub { font-size: .78rem; color: var(--gris); }
+
+.fila { display: grid; grid-template-columns: 1.1fr 1fr; gap: 24px; }
+.criterios { display: grid; gap: 14px; }
+.criterio { border-radius: 12px; padding: 14px 16px; background: var(--papel); display: grid; gap: 10px; }
+.criterio-top { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; }
+.criterio-top strong { font-size: .95rem; }
+.criterio-cifra { font-family: var(--mono); font-size: 1.4rem; font-weight: 600; white-space: nowrap; }
+.progreso { height: 10px; border-radius: 6px; background: var(--papel-2); overflow: hidden; }
+.progreso i { display: block; height: 100%; border-radius: 6px; background: var(--ambar); }
+.criterio.cumple .progreso i { background: var(--ahorro); }
+.criterio-estado { font-family: var(--mono); font-size: .75rem; text-transform: uppercase; letter-spacing: .06em; color: #7a5a00; }
+.criterio.cumple .criterio-estado { color: var(--ahorro); }
+.nota { font-size: .8rem; color: var(--gris); }
+
+.embudo { display: grid; gap: 8px; }
+.etapa { display: grid; grid-template-columns: 11em 1fr 5.5em; align-items: center; gap: 12px; font-size: .88rem; }
+.etapa-barra { height: 22px; background: var(--papel-2); border-radius: 6px; overflow: hidden; }
+.etapa-barra i { display: block; height: 100%; background: var(--tablero); border-radius: 6px; min-width: 2px; }
+.etapa.fuerte .etapa-barra i { background: var(--ahorro); }
+.etapa-num { font-family: var(--mono); text-align: right; white-space: nowrap; }
+.etapa-num small { color: var(--gris); }
+
+.tabla-caja { overflow-x: auto; margin: 0 -4px; }
+table { width: 100%; border-collapse: collapse; font-size: .84rem; }
+th { text-align: left; font-family: var(--mono); font-size: .68rem; text-transform: uppercase; letter-spacing: .06em; color: var(--gris); font-weight: 500; padding: 8px 10px; border-bottom: 1.5px solid var(--tinta); white-space: nowrap; }
+td { padding: 10px; border-bottom: 1px solid var(--linea); vertical-align: top; }
+td.num { font-family: var(--mono); text-align: right; white-space: nowrap; font-variant-numeric: tabular-nums; }
+th.num { text-align: right; }
+tr:hover td { background: #f6f8f4; }
+.pill { display: inline-block; padding: 2px 9px; border-radius: 999px; font-size: .74rem; font-weight: 600; white-space: nowrap; }
+.nivel-3 { background: var(--ahorro); color: #fff; }
+.nivel-2 { background: var(--ahorro-suave); color: #075747; }
+.nivel-1 { background: var(--ambar-suave); color: #6b4a00; }
+.nivel-0 { background: var(--papel-2); color: var(--gris); }
+.si { color: var(--ahorro); font-weight: 700; }
+.no { color: var(--gris); }
+.chips { display: flex; flex-wrap: wrap; gap: 4px; }
+.chip { font-family: var(--mono); font-size: .68rem; padding: 1px 6px; border-radius: 4px; background: var(--papel-2); color: var(--tinta-2); }
+.chip.on { background: var(--tablero); color: #e3eae4; }
+.puntaje { display: inline-flex; align-items: center; gap: 8px; }
+.puntaje-barra { width: 54px; height: 6px; border-radius: 4px; background: var(--papel-2); overflow: hidden; }
+.puntaje-barra i { display: block; height: 100%; background: var(--ahorro); }
+.vacio { color: var(--gris); font-size: .9rem; padding: 18px 0; text-align: center; }
+.actividad { list-style: none; margin: 0; padding: 0; display: grid; gap: 0; max-height: 440px; overflow-y: auto; }
+.actividad li { display: grid; grid-template-columns: 5.5em 7.5em 1fr; gap: 10px; padding: 7px 0; border-bottom: 1px dashed var(--linea); font-size: .82rem; }
+.actividad .t { font-family: var(--mono); color: var(--gris); }
+.actividad .s { font-family: var(--mono); color: var(--tinta-2); }
+.escala { display: flex; flex-wrap: wrap; gap: 8px 16px; font-size: .8rem; color: var(--gris); }
+
+.entrada { min-height: 100vh; display: grid; place-items: center; padding: 24px var(--gutter); }
+.tarjeta-login { width: min(420px, 100%); background: var(--blanco); border-radius: 20px; padding: 28px; box-shadow: 0 0 0 1px var(--linea), 0 30px 60px -40px rgba(22,33,28,.6); display: grid; gap: 16px; }
+.tarjeta-login input { min-height: 48px; border-radius: 10px; border: 0; box-shadow: inset 0 0 0 1.5px var(--linea); padding: 0 12px; background: var(--papel); }
+.tarjeta-login .btn { min-height: 48px; }
+.msg { font-size: .88rem; color: var(--tinta-2); }
+.msg.error { color: var(--error); }
+.estado { font-family: var(--mono); font-size: .75rem; color: #8ea398; }
+
+@media (max-width: 1100px) { .kpis { grid-template-columns: repeat(3, minmax(0, 1fr)); } .fila { grid-template-columns: 1fr; } }
+@media (max-width: 560px) { .kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); } .etapa { grid-template-columns: 8em 1fr 4.5em; } .actividad li { grid-template-columns: 4.5em 1fr; } .actividad .s { display: none; } }
+</style>
+</head>
+<body>
+
+<section class="entrada" id="vista-login">
+  <form class="tarjeta-login" id="form-login">
+    <div class="marca" style="color:var(--tinta)">
+      <svg viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="7" fill="#16211C"/><path d="M18 4 8 18h7l-2 10 11-15h-7z" fill="#F0A202"/></svg>
+      <span>voltea</span>
+    </div>
+    <h1>Backoffice de validación</h1>
+    <p class="msg">Solo para el Equipo 6. Te enviamos un enlace de acceso a tu correo.</p>
+    <label for="correo" class="kpi-rotulo">Correo autorizado</label>
+    <input id="correo" type="email" autocomplete="email" required>
+    <button class="btn" type="submit" id="btn-login">Enviarme el enlace</button>
+    <p class="msg" id="msg-login" role="status"></p>
+  </form>
+</section>
+
+<div id="vista-panel" hidden>
+  <header class="barra">
+    <div class="marca">
+      <svg viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="7" fill="#26362f"/><path d="M18 4 8 18h7l-2 10 11-15h-7z" fill="#F0A202"/></svg>
+      <span>voltea</span><small>Backoffice · PROTO Equipo 6</small>
+    </div>
+    <div class="filtros">
+      <label for="f-entrevistador">Entrevistador <select id="f-entrevistador"><option value="">Todos</option></select></label>
+      <label><input type="checkbox" id="f-pruebas" checked> Ocultar pruebas</label>
+      <span class="estado" id="estado">—</span>
+      <button class="btn btn-claro" id="btn-actualizar" type="button">Actualizar</button>
+      <button class="btn btn-borde" id="btn-salir" type="button">Salir</button>
+    </div>
+  </header>
+
+  <main>
+    <section class="kpis" id="kpis" aria-label="Resumen"></section>
+
+    <div class="fila">
+      <section class="panel">
+        <div class="panel-cabeza">
+          <h2>Criterio de éxito de la hipótesis</h2>
+          <p>Pivote modular · propuesta del 2026-09-16</p>
+        </div>
+        <div class="criterios" id="criterios"></div>
+        <p class="nota">Meta de la hipótesis: de 10 dueños entrevistados con el prototipo, ≥4 aceptan agendar la instalación con el precio explícito y ≥2 eligen un módulo. Se cambia de rumbo si aceptan menos de 2. Los conteos salen de los formularios enviados; el denominador son las sesiones abiertas con enlace de entrevistador.</p>
+      </section>
+
+      <section class="panel">
+        <div class="panel-cabeza">
+          <h2>Embudo de compromiso</h2>
+          <p>Sesiones únicas que llegaron a cada paso</p>
+        </div>
+        <div class="embudo" id="embudo"></div>
+      </section>
+    </div>
+
+    <section class="panel">
+      <div class="panel-cabeza">
+        <h2>Solicitudes de instalación</h2>
+        <button class="btn" type="button" id="csv-leads">Descargar CSV</button>
+      </div>
+      <div class="tabla-caja"><table id="tabla-leads"></table></div>
+    </section>
+
+    <section class="panel">
+      <div class="panel-cabeza">
+        <h2>Visitantes por nivel de compromiso</h2>
+        <button class="btn" type="button" id="csv-sesiones">Descargar CSV</button>
+      </div>
+      <div class="escala">
+        <span><span class="pill nivel-3">Intención de compra</span> ≥ 70</span>
+        <span><span class="pill nivel-2">Comprometido</span> 45–69</span>
+        <span><span class="pill nivel-1">Interesado</span> 20–44</span>
+        <span><span class="pill nivel-0">Curioso</span> &lt; 20</span>
+        <span>Puntaje: vio precios 5 · calculadora 15 · plan con módulo 20 · formulario 5 · agendó 25 · aceptó precio 10 · apartó cupo 20</span>
+      </div>
+      <div class="tabla-caja"><table id="tabla-sesiones"></table></div>
+    </section>
+
+    <section class="panel">
+      <div class="panel-cabeza"><h2>Actividad reciente</h2><p>Últimos 60 eventos</p></div>
+      <ul class="actividad" id="actividad"></ul>
+    </section>
+  </main>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.57.4/dist/umd/supabase.min.js"></script>
+<script src="assets/config.js"></script>
+<script src="assets/admin.js"></script>
+</body>
+</html>

@@ -1,0 +1,312 @@
+<!doctype html>
+<html lang="es-CO">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Voltea · Tu factura de luz, desarmada por aparato</title>
+<meta name="description" content="Instalamos un medidor en el tablero de tu negocio sin costo inicial. En 30 días ves qué equipo y a qué hora se te va la plata, y activas solo los módulos que se pagan solos.">
+<meta property="og:title" content="Voltea · Tu factura de luz, desarmada por aparato">
+<meta property="og:description" content="Medidor sin costo inicial para pymes de Cali. Plan desde $99.000 al mes, sin permanencia.">
+<meta name="theme-color" content="#16211C">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%2316211C'/%3E%3Cpath d='M18 4 8 18h7l-2 10 11-15h-7z' fill='%23F0A202'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="assets/estilos.css">
+</head>
+<body>
+
+<header class="barra">
+  <a class="marca" href="#inicio" aria-label="Voltea, inicio">
+    <svg viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="7" fill="currentColor"/><path d="M18 4 8 18h7l-2 10 11-15h-7z" fill="#F0A202"/></svg>
+    <span>voltea</span>
+  </a>
+  <p class="barra-piloto"><span class="punto-vivo" aria-hidden="true"></span>Piloto en Cali y área metropolitana</p>
+  <a class="boton boton-chico" href="#agendar" data-cta="barra">Agendar medidor</a>
+</header>
+
+<main>
+
+<!-- Relato con escena 3D fija: inicio → medir → entender → ahorrar -->
+<section class="relato" id="inicio" data-seccion="relato">
+  <div class="relato-escena" aria-hidden="true">
+    <div class="escena" id="escena"></div>
+    <div class="lcd" id="lcd">
+      <div class="lcd-fila"><span class="lcd-rotulo">Hora</span><span class="lcd-valor" id="lcd-hora">09:00</span></div>
+      <div class="lcd-fila"><span class="lcd-rotulo">Potencia</span><span class="lcd-valor"><span id="lcd-kw">10,3</span> kW</span></div>
+      <div class="lcd-fila"><span class="lcd-rotulo">Te cuesta</span><span class="lcd-valor lcd-plata">$<span id="lcd-costo">8.240</span>/h</span></div>
+      <div class="lcd-estado" id="lcd-estado">Local abierto</div>
+    </div>
+    <p class="escena-pie" id="escena-pie">Así se mueve la energía en un local típico: del tablero a cada equipo.</p>
+  </div>
+
+  <div class="relato-texto">
+    <div class="paso paso-inicio" data-estado="ambiente">
+      <p class="antetitulo">Energía como servicio para negocios de Cali</p>
+      <h1>Tu factura de luz, <em>desarmada</em> por aparato.</h1>
+      <p class="entrada">Instalamos un medidor en el tablero de tu negocio sin costo inicial. En 30 días sabes qué equipo y a qué hora se te va la plata, y activas solo los módulos que se pagan solos.</p>
+      <div class="acciones">
+        <a class="boton" href="#agendar" data-cta="hero">Agendar instalación del medidor</a>
+        <a class="boton boton-sec" href="#calculadora" data-cta="hero-calculadora">Calcular mi ahorro</a>
+      </div>
+      <ul class="garantias">
+        <li><strong>$0</strong> de inversión inicial</li>
+        <li><strong>Sin</strong> permanencia</li>
+        <li><strong>1 visita</strong> de instalación</li>
+      </ul>
+    </div>
+
+    <div class="paso" data-estado="medir" id="como-funciona">
+      <p class="paso-num">Paso 1 de 3 · Medir</p>
+      <h2>Ponemos un medidor en tu tablero.</h2>
+      <p>Un electricista lo conecta en una visita, sin cortar la operación ni cambiar tus equipos. El aparato es nuestro: tú no lo compras.</p>
+      <p class="nota-lateral">Mide cada pocos segundos, no una vez al mes como la factura.</p>
+    </div>
+
+    <div class="paso" data-estado="entender">
+      <p class="paso-num">Paso 2 de 3 · Entender</p>
+      <h2>Ves qué equipo y a qué hora se te va la plata.</h2>
+      <p>La app separa tu consumo por equipo y te avisa lo que no cuadra.</p>
+      <div class="aviso-app" role="img" aria-label="Ejemplo de aviso en la app">
+        <div class="aviso-cabeza"><span class="aviso-icono" aria-hidden="true">!</span>Voltea · hace 2 min</div>
+        <p><strong>El aire del salón quedó prendido de 9 p.m. a 6 a.m.</strong> Van <span class="mono">$84.000</span> este mes solo en esas horas.</p>
+      </div>
+    </div>
+
+    <div class="paso" data-estado="ahorrar">
+      <p class="paso-num">Paso 3 de 3 · Ahorrar por partes</p>
+      <h2>Activas solo los módulos que se pagan solos.</h2>
+      <p>Control del aire, monitor de nevera, luces o tomas inteligentes. Cada módulo se suma a tu plan mensual y te muestra lo que ahorró contra lo que cuesta. Si no se paga, lo quitas.</p>
+      <a class="boton boton-sec" href="#plan" data-cta="pasos-plan">Ver módulos y precios</a>
+    </div>
+  </div>
+</section>
+
+<!-- El problema: la factura dice cuánto, no quién -->
+<section class="franja factura-sec" id="problema" data-seccion="problema">
+  <div class="contenedor dos-col">
+    <div>
+      <p class="antetitulo">El problema</p>
+      <h2>Tu factura dice <em>cuánto</em>. No dice <em>quién</em>.</h2>
+      <p>Llega un número al mes, sin separar la nevera del aire ni el día de la noche. Sin ese desglose no hay cómo saber qué apagar, qué cambiar o si vale la pena invertir.</p>
+      <p class="dato-fuente"><span class="mono">19,8 %</span> es el potencial de ahorro promedio en electricidad que la UPME encontró en las industrias que evaluó (Programa de Evaluación Industrial). El primer paso siempre es medir.</p>
+    </div>
+    <div class="factura-vs">
+      <figure class="factura" aria-label="Así se ve hoy tu factura">
+        <figcaption>Hoy</figcaption>
+        <div class="factura-hoja">
+          <p class="factura-titulo">Factura de energía</p>
+          <dl>
+            <div><dt>Periodo</dt><dd>Agosto</dd></div>
+            <div><dt>Consumo</dt><dd class="mono">4.050 kWh</dd></div>
+            <div class="factura-total"><dt>Total a pagar</dt><dd class="mono">$3.240.000</dd></div>
+          </dl>
+          <p class="factura-duda">¿Y eso de dónde sale?</p>
+        </div>
+      </figure>
+      <figure class="desglose" aria-label="Así se ve con Voltea">
+        <figcaption>Con Voltea</figcaption>
+        <ul class="barras">
+          <li style="--p:30%"><span>Nevera y vitrina</span><span class="mono">$980.000</span></li>
+          <li style="--p:25%" class="alerta"><span>Aire del salón <em>· 38 % de noche</em></span><span class="mono">$820.000</span></li>
+          <li style="--p:20%"><span>Horno</span><span class="mono">$640.000</span></li>
+          <li style="--p:13%"><span>Iluminación</span><span class="mono">$410.000</span></li>
+          <li style="--p:12%"><span>Caja y equipos</span><span class="mono">$390.000</span></li>
+        </ul>
+        <p class="desglose-pie">Ejemplo ilustrativo de un local de comidas.</p>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<!-- Calculadora -->
+<section class="franja calculadora-sec" id="calculadora" data-seccion="calculadora">
+  <div class="contenedor">
+    <p class="antetitulo">Calcula con tu propia factura</p>
+    <h2>¿Cuánto se te podría estar yendo?</h2>
+    <div class="calc">
+      <form class="calc-entradas" id="calc-form" onsubmit="return false">
+        <label for="calc-factura">¿Cuánto pagaste de luz el último mes?</label>
+        <div class="campo-plata"><span>$</span><input id="calc-factura" name="factura" inputmode="numeric" autocomplete="off" value="3.240.000" aria-describedby="calc-ayuda"></div>
+        <p class="ayuda" id="calc-ayuda">El total de tu última factura, en pesos.</p>
+        <input id="calc-rango" type="range" min="300000" max="20000000" step="50000" value="3240000" aria-label="Ajustar el valor de la factura">
+
+        <label for="calc-tipo">¿Qué tipo de negocio tienes?</label>
+        <select id="calc-tipo" name="tipo"></select>
+
+        <fieldset class="calc-horario">
+          <legend>¿Cuántas horas al día abres?</legend>
+          <div class="segmentos" role="radiogroup">
+            <label><input type="radio" name="horas" value="8" id="h8"> 8 h</label>
+            <label><input type="radio" name="horas" value="12" id="h12" checked> 12 h</label>
+            <label><input type="radio" name="horas" value="16" id="h16"> 16 h</label>
+            <label><input type="radio" name="horas" value="24" id="h24"> 24 h</label>
+          </div>
+        </fieldset>
+      </form>
+
+      <div class="calc-resultado" aria-live="polite">
+        <div class="calc-reparto" id="calc-reparto"></div>
+        <div class="calc-cifras">
+          <div>
+            <p class="cifra-rotulo">Ahorro estimado al mes</p>
+            <p class="cifra cifra-ahorro mono" id="calc-ahorro">$0</p>
+          </div>
+          <div>
+            <p class="cifra-rotulo">Lo que más te ahorra primero</p>
+            <p class="cifra-texto" id="calc-top">—</p>
+          </div>
+        </div>
+        <p class="calc-letra">Estimación de referencia con supuestos generales por tipo de negocio. El ahorro real lo mide tu medidor en los primeros 30 días; si no aparece, no activas módulos.</p>
+        <a class="boton" href="#plan" id="calc-a-plan" data-cta="calculadora-plan">Armar mi plan con esto</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Plan por módulos -->
+<section class="franja plan-sec" id="plan" data-seccion="plan">
+  <div class="contenedor">
+    <p class="antetitulo">Precios claros, mes a mes</p>
+    <h2>Arma tu plan. Quita lo que no se pague solo.</h2>
+    <div class="plan">
+      <div class="plan-modulos">
+        <article class="modulo modulo-base">
+          <div class="modulo-cabeza">
+            <span class="modulo-icono" data-icono="medidor" aria-hidden="true"></span>
+            <div>
+              <h3>Plan base</h3>
+              <p>Medidor instalado en tu tablero + app con desglose por equipo y avisos.</p>
+            </div>
+          </div>
+          <p class="modulo-precio"><span class="mono">$99.000</span> / mes · incluido</p>
+        </article>
+        <div id="lista-modulos" class="lista-modulos"></div>
+      </div>
+
+      <aside class="resumen" id="resumen" aria-live="polite">
+        <p class="resumen-rotulo">Tu plan</p>
+        <ul class="resumen-lineas" id="resumen-lineas"></ul>
+        <div class="resumen-total">
+          <span>Total mensual</span>
+          <span class="mono" id="resumen-total">$99.000</span>
+        </div>
+        <div class="resumen-neto" id="resumen-neto"></div>
+        <p class="resumen-letra">Sin inversión inicial. Sin permanencia: cancelas cuando quieras. La instalación del medidor no tiene costo.</p>
+        <a class="boton boton-ancho" href="#agendar" data-cta="resumen-agendar">Agendar con este plan</a>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<!-- Agendar -->
+<section class="franja agendar-sec" id="agendar" data-seccion="agendar">
+  <div class="contenedor dos-col agendar-col">
+    <div class="agendar-intro">
+      <p class="antetitulo">Piloto en Cali, Jamundí, Yumbo y Palmira</p>
+      <h2>Agenda la instalación de tu medidor.</h2>
+      <p>Te escribimos por WhatsApp para confirmar el día. La visita toma alrededor de una hora y no necesitas apagar nada.</p>
+      <ol class="despues">
+        <li><strong>Hoy</strong> eliges fecha y franja.</li>
+        <li><strong>En la visita</strong> instalamos el medidor sin costo.</li>
+        <li><strong>A los 30 días</strong> ves tu desglose y decides qué módulos activar.</li>
+      </ol>
+    </div>
+
+    <form class="formulario" id="formulario" novalidate>
+      <div class="fila-2">
+        <div class="campo"><label for="f-nombre">Tu nombre</label><input id="f-nombre" name="nombre" autocomplete="name" required minlength="2" maxlength="80"></div>
+        <div class="campo"><label for="f-negocio">Nombre del negocio</label><input id="f-negocio" name="negocio" autocomplete="organization" required minlength="2" maxlength="100"></div>
+      </div>
+      <div class="fila-2">
+        <div class="campo"><label for="f-tipo">Tipo de negocio</label><select id="f-tipo" name="tipo_negocio" required></select></div>
+        <div class="campo"><label for="f-ciudad">Ciudad</label>
+          <select id="f-ciudad" name="ciudad" required>
+            <option value="Cali">Cali</option><option value="Jamundí">Jamundí</option><option value="Yumbo">Yumbo</option><option value="Palmira">Palmira</option><option value="Otra">Otra</option>
+          </select></div>
+      </div>
+      <div class="fila-2">
+        <div class="campo"><label for="f-whatsapp">WhatsApp</label><input id="f-whatsapp" name="whatsapp" type="tel" inputmode="tel" autocomplete="tel" required placeholder="300 123 4567" maxlength="20"></div>
+        <div class="campo"><label for="f-correo">Correo <span class="opcional">(opcional)</span></label><input id="f-correo" name="correo" type="email" autocomplete="email" maxlength="120"></div>
+      </div>
+      <div class="campo">
+        <label for="f-rol">¿Quién aprueba los pagos del negocio?</label>
+        <select id="f-rol" name="rol" required>
+          <option value="">Elige una opción</option>
+          <option value="yo_solo">Yo, sin consultar a nadie</option>
+          <option value="yo_con_socio">Yo, con un socio o familiar</option>
+          <option value="otra_persona">Otra persona (dueño, gerente, contador)</option>
+        </select>
+      </div>
+      <div class="fila-2">
+        <div class="campo"><label for="f-fecha">Fecha preferida</label><input id="f-fecha" name="fecha_preferida" type="date" required></div>
+        <div class="campo"><label for="f-franja">Franja</label>
+          <select id="f-franja" name="franja_preferida" required>
+            <option value="manana">Mañana (7 a 11 a.m.)</option><option value="mediodia">Mediodía (11 a.m. a 2 p.m.)</option><option value="tarde">Tarde (2 a 6 p.m.)</option>
+          </select></div>
+      </div>
+      <div class="campo">
+        <label for="f-factura">Tu factura de luz aproximada</label>
+        <div class="campo-plata"><span>$</span><input id="f-factura" name="factura_mensual" inputmode="numeric" autocomplete="off"></div>
+      </div>
+
+      <div class="plan-elegido" id="plan-elegido"></div>
+
+      <label class="chequeo"><input type="checkbox" id="f-precio" name="acepta_precio"><span id="f-precio-texto">Entiendo que, después de la instalación, el plan cuesta <strong>$99.000 al mes</strong> y que puedo cancelar cuando quiera.</span></label>
+      <label class="chequeo"><input type="checkbox" id="f-consentimiento" name="consentimiento" required><span>Autorizo que me contacten por WhatsApp sobre este piloto y el tratamiento de mis datos para ese fin (Ley 1581 de 2012). No se comparten con terceros.</span></label>
+
+      <p class="error-form" id="error-form" role="alert" hidden></p>
+      <button class="boton boton-ancho" type="submit" id="f-enviar">Agendar mi instalación</button>
+    </form>
+
+    <div class="confirmacion" id="confirmacion" hidden tabindex="-1">
+      <p class="antetitulo">Solicitud recibida</p>
+      <h2 id="conf-titulo">Listo.</h2>
+      <p id="conf-texto">Alguien del equipo te escribe por WhatsApp para confirmar la visita.</p>
+
+      <div class="cupo" id="cupo">
+        <h3>¿Quieres asegurar tu cupo en el piloto?</h3>
+        <p>Aparta tu instalación con <strong class="mono">$20.000</strong>. Se descuentan de tu primera mensualidad y te los devolvemos si decides no seguir.</p>
+        <button class="boton" type="button" id="btn-cupo">Apartar mi cupo con $20.000</button>
+        <button class="boton-texto" type="button" id="btn-sin-cupo">Por ahora no</button>
+      </div>
+
+      <div class="revelacion" id="revelacion" hidden>
+        <h3>Gracias. No se te cobró nada.</h3>
+        <p>Voltea es, por ahora, un piloto de validación de un equipo de estudiantes de la Universidad Icesi. Todavía no estamos cobrando y no te vamos a pedir datos de pago. Tu interés quedó registrado y es exactamente lo que necesitábamos saber.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Preguntas -->
+<section class="franja preguntas-sec" id="preguntas" data-seccion="preguntas">
+  <div class="contenedor angosto">
+    <p class="antetitulo">Lo que todos preguntan</p>
+    <h2>Preguntas frecuentes</h2>
+    <details data-faq="enchufes"><summary>¿Y por qué no compro yo mismo unos enchufes inteligentes?</summary><p>Puedes. Lo que no trae el enchufe es saber cuál de tus equipos vale la pena controlar y cuánto te ahorró de verdad. El medidor mira todo el tablero, no un aparato, y cada módulo te muestra su ahorro contra su costo.</p></details>
+    <details data-faq="permanencia"><summary>¿Hay permanencia o multa por cancelar?</summary><p>No. Pagas mes a mes y cancelas cuando quieras. Si cancelas, retiramos el medidor sin costo.</p></details>
+    <details data-faq="instalacion"><summary>¿Quién instala y hay que cortar la luz?</summary><p>Un electricista del equipo. El medidor va en el tablero principal y la instalación toma alrededor de una hora; buscamos una franja en la que no afecte tu operación.</p></details>
+    <details data-faq="ahorro"><summary>¿Y si no ahorro nada?</summary><p>Los primeros 30 días solo mides. Si el desglose no muestra ahorros que paguen un módulo, no activas ninguno y puedes cancelar el plan base.</p></details>
+    <details data-faq="datos"><summary>¿Qué pasa con mis datos?</summary><p>Los datos de consumo son tuyos. Los usamos para mostrarte el desglose y las recomendaciones, y no los compartimos con tu operador de red ni con terceros.</p></details>
+    <details data-faq="industria"><summary>¿Sirve para maquinaria pesada?</summary><p>Todavía no. El piloto está pensado para comercio, servicios y manufactura liviana. Motores, compresores y hornos industriales trifásicos necesitan otro tipo de control.</p></details>
+  </div>
+</section>
+
+</main>
+
+<footer class="pie">
+  <div class="contenedor pie-col">
+    <a class="marca" href="#inicio" aria-label="Voltea, volver arriba">
+      <svg viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="7" fill="currentColor"/><path d="M18 4 8 18h7l-2 10 11-15h-7z" fill="#F0A202"/></svg>
+      <span>voltea</span>
+    </a>
+    <p>Prototipo académico del Equipo 6 · Experimentación y Estrategia de Negocio · Universidad Icesi, 2026-2. Voltea es un nombre de trabajo y esta página no es todavía una oferta comercial vigente: las cifras de ahorro son estimaciones ilustrativas.</p>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.57.4/dist/umd/supabase.min.js"></script>
+<script src="assets/config.js"></script>
+<script type="module" src="assets/app.js"></script>
+</body>
+</html>
