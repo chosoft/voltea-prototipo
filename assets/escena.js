@@ -157,7 +157,7 @@ export function crearEscena(contenedor, { alTick } = {}) {
 
   // Etiquetas de costo y anillos de módulo
   const etiquetas = {}; const anillos = {};
-  const posEtiq = { frio: [2.95, 2.55, -2.2], aire: [-1.1, 3.25, -2.6], horno: [0.9, 1.55, -2.2], luces: [1.6, 2.15, 0.4], equipos: [0.7, 1.8, 1.1] };
+  const posEtiq = { frio: [2.95, 2.55, -2.2], aire: [-1.1, 3.25, -2.6], horno: [0.0, 1.3, -1.9], luces: [2.1, 2.5, 0.6], equipos: [0.7, 1.8, 1.1] };
   for (const e of EQUIPOS) {
     const hex = e.fuga ? "#f0a202" : "#e9efe8";
     const sp = etiqueta("$" + e.mes.toLocaleString("es-CO"), e.fuga ? "Aire · prendido de noche" : e.nombre + " · al mes", hex);
@@ -174,7 +174,7 @@ export function crearEscena(contenedor, { alTick } = {}) {
     ambiente: { cam: new THREE.Vector3(9.2, 6.4, 10.2), mira: new THREE.Vector3(0, 1.1, -0.6) },
     medir:    { cam: new THREE.Vector3(1.4, 3.1, 3.2),  mira: new THREE.Vector3(-3.5, 1.5, -1.7) },
     entender: { cam: new THREE.Vector3(7.8, 5.6, 9.0),  mira: new THREE.Vector3(0, 1.4, -1.0) },
-    ahorrar:  { cam: new THREE.Vector3(-6.2, 5.8, 9.4), mira: new THREE.Vector3(0.6, 1.3, -1.0) }
+    ahorrar:  { cam: new THREE.Vector3(5.6, 7.4, 9.6),  mira: new THREE.Vector3(-0.2, 1.5, -1.3) }
   };
   let estado = "ambiente";
   const camPos = ESTADOS.ambiente.cam.clone(), camMira = ESTADOS.ambiente.mira.clone();
