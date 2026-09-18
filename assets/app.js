@@ -244,6 +244,7 @@ const plan = {
     $("#resumen-lineas").innerHTML = lineas.join("");
     const total = this.total(), ahorro = this.ahorro(), neto = ahorro - total;
     $("#resumen-total").textContent = pesos(total);
+    $("#barra-plan-total").textContent = pesos(total);
     const netoEl = $("#resumen-neto");
     netoEl.classList.toggle("negativo", neto < 0);
     netoEl.innerHTML = calc.factura
@@ -344,3 +345,15 @@ $("#btn-sin-cupo").addEventListener("click", () => {
   const r = $("#revelacion"); r.hidden = false;
   r.querySelector("h3").textContent = "Entendido. Tu solicitud sigue en pie.";
 });
+
+/* ---------- Barra inferior del plan (celular) ---------- */
+// Visible mientras el visitante recorre precios y calculadora; se oculta al llegar al formulario.
+{
+  const barra = $("#barra-plan");
+  const vistas = new Map();
+  const obs = new IntersectionObserver((entradas) => {
+    for (const en of entradas) vistas.set(en.target.id, en.isIntersecting);
+    barra.hidden = !(vistas.get("plan") || vistas.get("calculadora")) || vistas.get("agendar");
+  }, { threshold: 0.12 });
+  ["calculadora", "plan", "agendar"].forEach((id) => obs.observe($("#" + id)));
+}
