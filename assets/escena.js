@@ -163,9 +163,9 @@ export function crearEscena(contenedor, { alTick } = {}) {
     const sp = etiqueta("$" + e.mes.toLocaleString("es-CO"), e.fuga ? "Aire · prendido de noche" : e.nombre + " · al mes", hex);
     sp.position.set(...posEtiq[e.id]); sp.material.opacity = 0; mundo.add(sp); etiquetas[e.id] = sp;
     if (e.modulo) {
-      const a = new THREE.Mesh(new THREE.TorusGeometry(0.34, 0.035, 10, 48), new THREE.MeshStandardMaterial({ color: C.ahorro, emissive: C.ahorroClaro, emissiveIntensity: 0.9 }));
+      const a = new THREE.Mesh(new THREE.TorusGeometry(0.46, 0.055, 12, 56), new THREE.MeshStandardMaterial({ color: C.ahorro, emissive: C.ahorroClaro, emissiveIntensity: 0.9 }));
       const p = (e.id === "luces" ? nodos.luces.punto : nodos[e.id].punto).clone();
-      a.position.set(p.x, p.y + 0.35, p.z + 0.35); a.rotation.x = Math.PI / 2.6; a.scale.setScalar(0.001); mundo.add(a); anillos[e.id] = a;
+      a.position.set(p.x, p.y + 0.18, p.z + 0.2); a.rotation.x = Math.PI / 2; a.scale.setScalar(0.001); mundo.add(a); anillos[e.id] = a;
     }
   }
 
@@ -268,7 +268,7 @@ export function crearEscena(contenedor, { alTick } = {}) {
       if (a) {
         const meta = mix.ahorrar > 0.5 && modulosActivos.has(e.id) ? 1 : 0.001;
         a.scale.setScalar(a.scale.x + (meta - a.scale.x) * Math.min(1, dt * 5));
-        a.rotation.z += dt * 1.4;
+        a.position.y += Math.sin(t * 2 + a.position.x) * 0.002;
       }
     }
 
