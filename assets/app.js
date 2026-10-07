@@ -272,12 +272,18 @@ const plan = {
     const top = recomendacion()[0];
     if (top.neto > 0) this.unidades[top.m.id] = Math.min(top.u, 2);
     this.pintar();
-    if (porUsuario) this.registrarCambio();
+    if (porUsuario) {
+      this.registrarCambio();
+      // Los módulos están plegados: se abren para que se vea lo que se agregó.
+      if (this.modulosActivos().length) document.querySelector(".mas-modulos")?.setAttribute("open", "");
+    }
   }
 };
 plan.construir();
 pintarCalculadora();
-plan.aplicarRecomendacion(false);
+// Al cargar se muestra solo el plan base ($49.000 + 10%), que es el precio que prueba el experimento.
+// Los módulos se agregan solo si la persona lo pide.
+plan.pintar();
 $("#f-factura").value = calc.factura.toLocaleString("es-CO");
 fTipo.value = calc.tipo;
 
