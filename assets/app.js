@@ -193,6 +193,8 @@ const plan = {
   unidades: Object.fromEntries(CFG.modulos.map((m) => [m.id, 0])),
   modulosActivos() { return CFG.modulos.filter((m) => this.unidades[m.id] > 0).map((m) => m.id); },
   total() { return CFG.planBase + CFG.modulos.reduce((s, m) => s + m.precio * this.unidades[m.id], 0); },
+  // Lo variable: el porcentaje del ahorro que el medidor demuestre.
+  comision() { return Math.round((CFG.porcentajeAhorro ?? 0) * this.ahorro()); },
   ahorro() { return ahorroHabitos() + CFG.modulos.reduce((s, m) => s + ahorroModulo(m, this.unidades[m.id]), 0); },
   detalle() { return CFG.modulos.filter((m) => this.unidades[m.id] > 0).map((m) => ({ id: m.id, unidades: this.unidades[m.id], precio: m.precio })); },
   construir() {
@@ -241,10 +243,12 @@ const plan = {
     }
     const lineas = [`<li><span>Plan base · medidor + app</span><span class="mono">${pesos(CFG.planBase)}</span></li>`]
       .concat(CFG.modulos.filter((m) => this.unidades[m.id]).map((m) => `<li><span>${m.nombre} × ${this.unidades[m.id]}</span><span class="mono">${pesos(m.precio * this.unidades[m.id])}</span></li>`));
+    const pct = Math.round((CFG.porcentajeAhorro ?? 0) * 100);
+    if (pct) lineas.push(`<li><span>${pct}% del ahorro que el medidor demuestre</span><span class="mono">${calc.factura ? "≈ " + pesos(this.comision()) : "variable"}</span></li>`);
     $("#resumen-lineas").innerHTML = lineas.join("");
-    const total = this.total(), ahorro = this.ahorro(), neto = ahorro - total;
-    $("#resumen-total").textContent = pesos(total);
-    $("#barra-plan-total").textContent = pesos(total);
+    const total = this.total(), ahorro = this.ahorro(), neto = ahorro - total - this.comision();
+    $("#resumen-total").textContent = pct ? `${pesos(total)} + ${pct}%` : pesos(total);
+    $("#barra-plan-total").textContent = pct ? `${pesos(total)} + ${pct}%` : pesos(total);
     const netoEl = $("#resumen-neto");
     netoEl.classList.toggle("negativo", neto < 0);
     netoEl.innerHTML = calc.factura
@@ -253,14 +257,15 @@ const plan = {
         : `Con una factura de <strong class="mono">${pesos(calc.factura)}</strong>, este plan costaría más de lo que ahorraría (≈ ${pesos(ahorro)}). Prueba con menos módulos.`)
       : "";
     const mods = this.detalle();
-    $("#plan-elegido").innerHTML = `Plan elegido: <strong>${mods.length ? "base + " + mods.map((d) => CFG.modulos.find((m) => m.id === d.id).nombre.toLowerCase() + " × " + d.unidades).join(", ") : "solo plan base"}</strong> · <strong>${pesos(total)}/mes</strong> · <a href="#plan">cambiar</a>`;
-    $("#f-precio-texto").innerHTML = `Entiendo que, después de la instalación, mi plan cuesta <strong>${pesos(total)} al mes</strong> y que puedo cancelar cuando quiera.`;
+    const variable = pct ? ` + ${pct}% del ahorro medido` : "";
+    $("#plan-elegido").innerHTML = `Plan elegido: <strong>${mods.length ? "base + " + mods.map((d) => CFG.modulos.find((m) => m.id === d.id).nombre.toLowerCase() + " × " + d.unidades).join(", ") : "solo plan base"}</strong> · <strong>${pesos(total)}/mes${variable}</strong> · <a href="#plan">cambiar</a>`;
+    $("#f-precio-texto").innerHTML = `Entiendo que, después de la semana de prueba gratis, mi plan cuesta <strong>${pesos(total)} al mes${variable}</strong>, y que puedo cancelar cuando quiera.`;
     escena?.ponerModulos(this.modulosActivos());
   },
   tCambio: null,
   registrarCambio() {
     clearTimeout(this.tCambio);
-    this.tCambio = setTimeout(() => registrar("plan_armado", { modulos: this.detalle(), total: this.total(), ahorro_estimado: Math.round(this.ahorro()), factura: calc.factura }), 1500);
+    this.tCambio = setTimeout(() => registrar("plan_armado", { modulos: this.detalle(), total: this.total(), comision_estimada: this.comision(), ahorro_estimado: Math.round(this.ahorro()), factura: calc.factura }), 1500);
   },
   aplicarRecomendacion(porUsuario) {
     for (const k in this.unidades) this.unidades[k] = 0;

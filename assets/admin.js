@@ -120,10 +120,10 @@
     ];
     $("#kpis").innerHTML = kpis.map(([r, v, s]) => `<div class="kpi"><span class="kpi-rotulo">${r}</span><span class="kpi-valor">${v}</span><span class="kpi-sub">${s}</span></div>`).join("");
 
-    // Criterio de éxito
+    // Criterio de éxito del cuaderno de experimento (EXPVAL, 2026-10-07), sobre 10 entrevistas.
     const criterios = [
       { t: "Agendan la instalación con el precio explícito", v: leadsPrecio, meta: 4, refuta: 2 },
-      { t: "Eligen al menos un módulo", v: leadsModulo, meta: 2 }
+      { t: "Apartan el cupo con $20.000", v: lds.filter((l) => l.cupo_apartado).length, meta: 2, refuta: 1 }
     ];
     $("#criterios").innerHTML = criterios.map((c) => {
       const cumple = c.v >= c.meta;

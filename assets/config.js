@@ -4,9 +4,12 @@ window.VOLTEA_CONFIG = {
   supabaseUrl: "https://icgxyfozuqlxavejnbdf.supabase.co",
   supabaseKey: "sb_publishable_fbA340rIm0iiV1YdfCWXcg_9iWygYd7",
 
-  // Precios de trabajo de la hipótesis (Pivote modular, 2026-09-16).
+  // Precios de trabajo de la hipótesis. v2 (cuaderno de experimento, 2026-10-07): cuota base más baja
+  // + un porcentaje del ahorro medido, porque en PROTO 3 de 4 usuarios propusieron pagar según el ahorro.
   // No salen de costos: son cifras para que la hipótesis sea refutable.
-  planBase: 99000,
+  planBase: 49000,
+  porcentajeAhorro: 0.10,
+  diasPrueba: 7,
   tarifaKwh: 800, // COP/kWh, rango conservador alrededor de Emcali 2025 (~779)
   modulos: [
     { id: "aire",      nombre: "Control de aire acondicionado", unidad: "por equipo",  precio: 25000, categoria: "aire",          tasa: 0.25, icono: "aire" },
