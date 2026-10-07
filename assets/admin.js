@@ -120,14 +120,15 @@
     ];
     $("#kpis").innerHTML = kpis.map(([r, v, s]) => `<div class="kpi"><span class="kpi-rotulo">${r}</span><span class="kpi-valor">${v}</span><span class="kpi-sub">${s}</span></div>`).join("");
 
-    // Criterio de éxito del cuaderno de experimento (EXPVAL, 2026-10-07), sobre 10 entrevistas.
+    // Criterio del cuaderno de experimento (EXPVAL, 2026-10-07), sobre 5 entrevistas: la persona agenda
+    // desde su propio celular después de la visita. Se refuta con 0 en cualquiera de los dos.
     const criterios = [
-      { t: "Agendan la instalación con el precio explícito", v: leadsPrecio, meta: 4, refuta: 2 },
-      { t: "Apartan el cupo con $20.000", v: lds.filter((l) => l.cupo_apartado).length, meta: 2, refuta: 1 }
+      { t: "Agendan con fecha (deseabilidad)", v: lds.length, meta: 2, refuta: 1 },
+      { t: "Agendan con la casilla del precio marcada (disposición a pagar)", v: leadsPrecio, meta: 2, refuta: 1 }
     ];
     $("#criterios").innerHTML = criterios.map((c) => {
       const cumple = c.v >= c.meta;
-      const estado = cumple ? "Se cumple la meta" : c.refuta != null && conEntrevistador >= 10 && c.v < c.refuta ? "Señal de cambio de rumbo" : `Faltan ${c.meta - c.v}`;
+      const estado = cumple ? "Se cumple la meta" : c.refuta != null && conEntrevistador >= 5 && c.v < c.refuta ? "Señal de cambio de rumbo" : `Faltan ${c.meta - c.v}`;
       return `<div class="criterio ${cumple ? "cumple" : ""}"><div class="criterio-top"><strong>${c.t}</strong><span class="criterio-cifra">${c.v} / ${c.meta}</span></div><div class="progreso"><i style="width:${Math.min(100, (c.v / c.meta) * 100)}%"></i></div><span class="criterio-estado">${estado}</span></div>`;
     }).join("");
 

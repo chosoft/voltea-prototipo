@@ -2,7 +2,7 @@
 
 Landing page con animación 3D y backoffice de intención de compra para el PROTO del **Equipo 6** — Experimentación y Estrategia de Negocio, Universidad Icesi (2026-2). Voltea es un nombre de trabajo.
 
-**Versión 2 (cuaderno de experimento de EXPVAL, 2026-10-07):** el dueño o administrador que aprueba los pagos de una pyme de Cali y su área metropolitana, con factura de al menos $800.000 y algún equipo controlable, agenda la instalación del medidor en los 7 días siguientes y acepta pagar **$49.000 al mes + 10% del ahorro que el medidor demuestre**, si entiende que medimos (no vendemos) energía, si la instalación es una visita sin obras ni cambios de voltaje y si tiene **7 días de prueba gratis**. Los criterios del backoffice siguen el cuaderno: ≥4 de 10 agendan, ≥2 apartan el cupo.
+**Versión 2 (cuaderno de experimento de EXPVAL, 2026-10-07):** el dueño o administrador que aprueba los pagos de una pyme de Cali y su área metropolitana, con factura de al menos $800.000 y algún equipo controlable, agenda la instalación del medidor en los 7 días siguientes y acepta pagar **$49.000 al mes + 10% del ahorro que el medidor demuestre**, si entiende que medimos (no vendemos) energía, si la instalación es una visita sin obras ni cambios de voltaje y si tiene **7 días de prueba gratis**. El experimento es de 5 entrevistas (una por integrante) que terminan pidiendo agendar; el backoffice sigue el cuaderno: se sostiene con ≥2 de 5 que agendan con el precio, se refuta si nadie agenda. El botón de apartar cupo queda en la página, pero ya no es criterio.
 
 Los equipos de la escena 3D (tablero con medidor, nevera, aire, horno y mostrador) se modelan por código en Blender: `blender/modelos_voltea.py` → `assets/modelos/*.glb`. Para regenerarlos:
 
