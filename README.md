@@ -2,7 +2,15 @@
 
 Landing page con animación 3D y backoffice de intención de compra para el PROTO del **Equipo 6** — Experimentación y Estrategia de Negocio, Universidad Icesi (2026-2). Voltea es un nombre de trabajo.
 
-Hipótesis que prueba (pivote modular, propuesta del 2026-09-16): el dueño o administrador de una pyme de comercio, servicios o manufactura liviana en Cali y su área metropolitana contrata el plan base (medidor sin costo inicial + app, COP 99.000/mes) y agrega al menos un módulo, si en 30 días el medidor le muestra qué equipos y a qué horas consume y el ahorro del primer módulo supera su costo, sin inversión inicial ni permanencia.
+**Versión 2 (cuaderno de experimento de EXPVAL, 2026-10-07):** el dueño o administrador que aprueba los pagos de una pyme de Cali y su área metropolitana, con factura de al menos $800.000 y algún equipo controlable, agenda la instalación del medidor en los 7 días siguientes y acepta pagar **$49.000 al mes + 10% del ahorro que el medidor demuestre**, si entiende que medimos (no vendemos) energía, si la instalación es una visita sin obras ni cambios de voltaje y si tiene **7 días de prueba gratis**. Los criterios del backoffice siguen el cuaderno: ≥4 de 10 agendan, ≥2 apartan el cupo.
+
+Los equipos de la escena 3D (tablero con medidor, nevera, aire, horno y mostrador) se modelan por código en Blender: `blender/modelos_voltea.py` → `assets/modelos/*.glb`. Para regenerarlos:
+
+```bash
+/Applications/Blender.app/Contents/MacOS/Blender -b --factory-startup -P blender/modelos_voltea.py -- assets/modelos
+```
+
+Hipótesis del PROTO (versión 1, pivote modular del 2026-09-16): el dueño o administrador de una pyme de comercio, servicios o manufactura liviana en Cali y su área metropolitana contrata el plan base (medidor sin costo inicial + app, COP 99.000/mes) y agrega al menos un módulo, si en 30 días el medidor le muestra qué equipos y a qué horas consume y el ahorro del primer módulo supera su costo, sin inversión inicial ni permanencia.
 
 ## Qué hay
 

@@ -11,6 +11,12 @@ import { EffectComposer } from "three/addons/postprocessing/EffectComposer.js";
 import { RenderPass } from "three/addons/postprocessing/RenderPass.js";
 import { UnrealBloomPass } from "three/addons/postprocessing/UnrealBloomPass.js";
 import { OutputPass } from "three/addons/postprocessing/OutputPass.js";
+import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
+
+// Modelos hechos en Blender (blender/modelos_voltea.py → assets/modelos/*.glb).
+// Mientras cargan, o si no cargan, se ve la versión hecha con cajas, así la escena nunca queda vacía.
+const cargador = new GLTFLoader();
+const RUTA_MODELOS = new URL("./modelos/", import.meta.url);
 
 const C = {
   piso: 0xdbe0d7, muroFondo: 0xe7eae3, muroLado: 0xdde2d9, tinta: 0x16211c, tablero: 0x23302a,
@@ -187,6 +193,31 @@ export function crearEscena(contenedor, { alTick } = {}) {
   const parteluz = caja(0.07, 1.4, 0.05, matMarco, { sombra: false, radio: 0.01 });
   parteluz.position.set(-3.985, 1.95, 0.4); mundo.add(parteluz);
 
+  /* ---------- Modelos de Blender ----------
+     Los materiales llamados "lcd", "led", "brasa", "pantalla" y "vidrio" se cambian por los de esta
+     escena, que son los que se animan con la hora del día; el resto queda como viene de Blender. */
+  const matVidrioModelo = ligero
+    ? matFisico({ color: 0xdff0f4, roughness: 0.08, metalness: 0, transparent: true, opacity: 0.3, envMapIntensity: 2 })
+    : matFisico({ color: 0xeef8fa, roughness: 0.04, metalness: 0, transmission: 0.94, thickness: 0.3, ior: 1.45, envMapIntensity: 1.6 });
+  function usarModelo(grupo, archivo, { rotY = 0, reemplazos = {}, alCargar } = {}) {
+    cargador.load(new URL(archivo + ".glb", RUTA_MODELOS).href, (gltf) => {
+      const modelo = gltf.scene;
+      modelo.rotation.y = rotY;
+      const cambios = { vidrio: matVidrioModelo, ...reemplazos };
+      modelo.traverse((o) => {
+        if (!o.isMesh) return;
+        o.castShadow = true; o.receiveShadow = true;
+        if (cambios[o.material.name]) { o.material = cambios[o.material.name]; if (o.material === matVidrioModelo) o.castShadow = false; }
+        else o.material.envMapIntensity = o.material.metalness > 0.5 ? 1.5 : 1.0;
+      });
+      // Se apaga la versión de cajas; las luces del grupo se quedan.
+      for (const hijo of grupo.children) if (!hijo.isLight) hijo.visible = false;
+      grupo.add(modelo);
+      modelo.updateWorldMatrix(true, true);
+      alCargar?.(modelo);
+    }, undefined, () => { /* sin modelo: se queda la versión de cajas */ });
+  }
+
   /* ---------- Tablero y medidor ---------- */
   const matMetalPintado = matEstandar({ color: 0x7c847f, roughness: 0.4, metalness: 0.6, envMapIntensity: 1.3 });
   const matInteriorTablero = matEstandar({ color: 0x9aa39d, roughness: 0.5, metalness: 0.5 });
@@ -215,6 +246,11 @@ export function crearEscena(contenedor, { alTick } = {}) {
   led.position.set(0.065, -0.08, 0.16); medidor.add(led);
   const halo = new THREE.Mesh(new THREE.SphereGeometry(0.42, 24, 14), new THREE.MeshBasicMaterial({ color: C.ahorroClaro, transparent: true, opacity: 0, depthWrite: false }));
   halo.position.copy(tablero.position).add(new THREE.Vector3(0.12, -0.32, 0)); mundo.add(halo);
+  usarModelo(tablero, "tablero", {
+    rotY: Math.PI / 2, reemplazos: { lcd: matLcd, led: matLed },
+    // El halo de "medir" sigue al medidor del modelo, que no está en el mismo punto que el de cajas.
+    alCargar: (m) => { const cuerpo = m.getObjectByName("medidor_cuerpo"); if (cuerpo) cuerpo.getWorldPosition(halo.position); }
+  });
 
   /* ---------- Equipos ---------- */
   const nodos = {};
@@ -260,6 +296,7 @@ export function crearEscena(contenedor, { alTick } = {}) {
     const luzFrio = new THREE.PointLight(0xdcf0ff, 5, 2.6, 2);
     luzFrio.position.set(2.95, 1.45, -2.25); g.add(luzFrio);
     mundo.add(g); mundo.add(mancha(2.95, -2.4, 2.1, 1.9));
+    usarModelo(g, "nevera");
     nodos.frio = { grupo: g, punto: new THREE.Vector3(2.95, 2.1, -2.45), luz: luzFrio };
   }
   // Aire acondicionado en el muro
@@ -272,6 +309,7 @@ export function crearEscena(contenedor, { alTick } = {}) {
     const luzA = caja(0.05, 0.025, 0.02, new THREE.MeshBasicMaterial({ color: C.ahorroClaro, toneMapped: false }), { sombra: false, radio: 0.004 });
     luzA.position.set(0.6, 0.1, 0.16); g.add(luzA);
     mundo.add(g);
+    usarModelo(g, "aire", { reemplazos: { lcd: luzA.material } });
     nodos.aire = { grupo: g, punto: new THREE.Vector3(-1.1, 2.8, -2.86), brisa: [] };
     for (let i = 0; i < 3; i++) {
       const b = new THREE.Mesh(new THREE.TorusGeometry(0.5 + i * 0.12, 0.012, 6, 40, Math.PI * 0.6), new THREE.MeshBasicMaterial({ color: 0x9fd9e6, transparent: true, opacity: 0 }));
@@ -291,6 +329,8 @@ export function crearEscena(contenedor, { alTick } = {}) {
     const top = caja(1.28, 0.05, 0.82, matEstandar({ color: 0x78827d, roughness: 0.22, metalness: 0.95, envMapIntensity: 1.8 }), { radio: 0.012 });
     top.position.y = 0.975; g.add(top);
     mundo.add(g); mundo.add(mancha(0.9, -2.45, 2.1, 1.7, 0.9));
+    // Los visores de las dos cámaras usan el mismo material que la puerta de cajas: brillan cuando el local abre.
+    usarModelo(g, "horno", { reemplazos: { brasa: puerta.material, lcd: matLcd } });
     nodos.horno = { grupo: g, punto: new THREE.Vector3(0.9, 1.0, -2.5), puerta: puerta.material };
   }
   // Mostrador con caja registradora
@@ -307,6 +347,7 @@ export function crearEscena(contenedor, { alTick } = {}) {
     const pie = caja(0.07, 0.22, 0.07, matEstandar({ color: 0x141a18, roughness: 0.4, metalness: 0.4 }), { radio: 0.01 });
     pie.position.set(0.6, 1.12, -0.12); g.add(pie);
     mundo.add(g); mundo.add(mancha(0.1, 0.95, 3.6, 1.7, 0.85));
+    usarModelo(g, "mostrador", { reemplazos: { pantalla: brillo.material, lcd: matLcd } });
     nodos.equipos = { grupo: g, punto: new THREE.Vector3(0.7, 1.05, 0.8), pantalla: brillo.material };
   }
   // Lámparas colgantes, con luz propia
