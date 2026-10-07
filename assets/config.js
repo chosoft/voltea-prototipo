@@ -19,7 +19,7 @@ window.VOLTEA_CONFIG = {
   ],
 
   // Reparto ilustrativo de la factura por tipo de negocio (supuestos de referencia, sin fuente;
-  // el medidor real reemplaza estos números en los primeros 30 días).
+  // el medidor real reemplaza estos números desde la semana de prueba).
   perfiles: {
     restaurante: { nombre: "Restaurante o panadería",   reparto: { refrigeracion: 0.32, coccion: 0.24, aire: 0.18, iluminacion: 0.12, equipos: 0.14 }, tipicos: { aire: 2, frio: 3, luces: 3, tomas: 4 } },
     tienda:      { nombre: "Tienda o minimercado",      reparto: { refrigeracion: 0.45, coccion: 0.00, aire: 0.15, iluminacion: 0.20, equipos: 0.20 }, tipicos: { aire: 1, frio: 4, luces: 3, tomas: 3 } },

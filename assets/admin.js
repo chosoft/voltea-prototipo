@@ -120,9 +120,11 @@
     ];
     $("#kpis").innerHTML = kpis.map(([r, v, s]) => `<div class="kpi"><span class="kpi-rotulo">${r}</span><span class="kpi-valor">${v}</span><span class="kpi-sub">${s}</span></div>`).join("");
 
-    // Criterio de éxito del cuaderno de experimento (EXPVAL, 2026-10-07), sobre 5 entrevistas.
+    // Criterio del cuaderno de experimento (EXPVAL, 2026-10-07), sobre 5 entrevistas: la persona agenda
+    // desde su propio celular después de la visita. Se refuta con 0 en cualquiera de los dos.
     const criterios = [
-      { t: "Agendan la instalación con el precio explícito", v: leadsPrecio, meta: 2, refuta: 1 }
+      { t: "Agendan con fecha (deseabilidad)", v: lds.length, meta: 2, refuta: 1 },
+      { t: "Agendan con la casilla del precio marcada (disposición a pagar)", v: leadsPrecio, meta: 2, refuta: 1 }
     ];
     $("#criterios").innerHTML = criterios.map((c) => {
       const cumple = c.v >= c.meta;

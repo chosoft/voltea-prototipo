@@ -285,8 +285,8 @@ fTipo.value = calc.tipo;
 const form = $("#formulario");
 const manana = new Date(Date.now() + 864e5);
 const iso = (d) => new Date(d.getTime() - d.getTimezoneOffset() * 6e4).toISOString().slice(0, 10);
+// Sin fecha por defecto: el criterio es «agenda con una fecha que la persona elige».
 $("#f-fecha").min = iso(manana);
-$("#f-fecha").value = iso(new Date(Date.now() + 3 * 864e5));
 $("#f-factura").addEventListener("input", (e) => { const n = soloDigitos(e.target.value); e.target.value = n ? n.toLocaleString("es-CO") : ""; });
 form.addEventListener("focusin", () => registrarUnaVez("form", "formulario_iniciado", { plan_total: plan.total() }), { once: false });
 
